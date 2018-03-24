@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
-import { emailChanged, passwordChanged, loginUser, signUpRedirect } from '../actions';
+import { emailChanged, passwordChanged, registerUser } from '../actions';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 
-class LoginForm extends Component {
+class SignUpForm extends Component {
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -13,23 +13,19 @@ class LoginForm extends Component {
     this.props.passwordChanged(text);
   }
 
-  onLoginButtonPress() {
-    const { email, password } = this.props;
-    this.props.loginUser({ email, password });
-  }
-
   onSignUpButtonPress() {
-    this.props.signUpRedirect();
+    const { email, password } = this.props;
+    this.props.registerUser({ email, password });
   }
 
-  renderLoginButton() {
+  renderSignUpButton() {
     if (this.props.loading) {
       return <Spinner size='large' />;
     }
 
     return (
-      <Button onPress={this.onLoginButtonPress.bind(this)}>
-        Login
+      <Button onPress={this.onSignUpButtonPress.bind(this)}>
+        Sign Up
       </Button>
     )
   }
@@ -42,7 +38,7 @@ class LoginForm extends Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <Card>
         <CardSection>
@@ -69,11 +65,10 @@ class LoginForm extends Component {
         </Text>
 
         <CardSection>
-          {this.renderLoginButton()}
           {this.renderSignUpButton()}
         </CardSection>
       </Card>
-    );
+    )
   }
 }
 
@@ -92,5 +87,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  emailChanged, passwordChanged, loginUser, signUpRedirect
-})(LoginForm);
+  emailChanged, passwordChanged, registerUser
+})(SignUpForm);

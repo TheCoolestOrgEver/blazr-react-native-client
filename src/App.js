@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import firebase from 'firebase';
-import { Header, Button, CardSection, Spinner } from './components/common';
+import reducers from './reducers'
 import LoginForm from './components/LoginForm';
+import Router from './Router';
 
 class App extends Component {
-  state = { loggedIn: null };
-
   componentWillMount() {
     firebase.initializeApp({
       apiKey: "AIzaSyDBugnZ_UZIrLV3QNr1wWKDIm1Bx7BpbqI",
@@ -16,43 +17,15 @@ class App extends Component {
       storageBucket: "blazr-32999.appspot.com",
       messagingSenderId: "466611530510"
     });
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({loggedIn: true });
-      } else {
-        this.setState({ loggedIn: false });
-      }
-    });
-  }
-
-  renderContent() {
-    switch (this.state.loggedIn) {
-      case true:
-        return (
-          <CardSection>
-            <Button onPress={() => firebase.auth().signOut()}>
-              Log Out
-            </Button>
-          </CardSection>
-        );
-      case false:
-        return <LoginForm />;
-      default:
-        return (
-          <View style={{justifyContent: 'center', alignSelf: 'center'}}>
-            <Spinner size="large" />
-          </View>
-        );
-    }
   }
 
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+
     return (
-      <View>
-        <Header headerText="blazr" />
-        {this.renderContent()}
-      </View>
+      <Provider store={store}>
+        <Router />
+      </Provider>
     );
   }
 }
