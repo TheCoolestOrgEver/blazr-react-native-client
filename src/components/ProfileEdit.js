@@ -7,25 +7,15 @@ import { Button, Card, CardSection, Input } from './common';
 import ProfileForm from './ProfileForm';
 
 class ProfileEdit extends Component {
-  //componentWillMount() {
-    //_.each()
-  //}
-
-  // onNameChange(text) {
-  //   this.props.nameChanged(text);
-  // }
-
-  // onAgeChange(text) {
-  //   this.props.ageChanged(text);
-  // }
-
-  // onBioChange(text) {
-  //   this.props.bioChanged(text);
-  // }
+  componentWillMount() {
+    _.each(this.props.profile, (value, prop) => {
+      this.props.updateProfile({ prop, value })
+    });
+  }
 
   onEditProfileButtonPress() {
     const { name, age, bio } = this.props;
-    this.props.saveProfile({ name, age, bio });
+    this.props.saveProfile({ name, age, bio, uid: this.props.profile.uid });
   }
 
   renderEditProfileButton() {
