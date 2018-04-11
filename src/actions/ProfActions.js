@@ -19,11 +19,11 @@ export const updateProfile = ({ prop, value }) => {
 
 export const createProfile = ({ name, age, bio }) => {
   const { currentUser } = firebase.auth();
-  //const uid = currentUser.uid;
+  const usrid = currentUser.uid;
 
   return(dispatch) => {
     firebase.database().ref(`/profiles`)
-      .push({ name, age, bio })
+      .push({ name, age, bio, usrid })
         .then(() => {
           dispatch({ type: PROFILE_CREATE });
           Actions.main();
@@ -44,10 +44,11 @@ export const fetchProfile = () => {
 
 export const saveProfile = ({ name, age, bio, uid }) => {
   const { currentUser } = firebase.auth();
+  const usrid = currentUser.uid;
 
   return(dispatch) => {
     firebase.database().ref(`/profiles/${uid}`)
-      .set({ name, age, bio })
+      .set({ name, age, bio, usrid })
         .then(() => {
           dispatch({ type: PROFILE_SAVE });
           Actions.pop();

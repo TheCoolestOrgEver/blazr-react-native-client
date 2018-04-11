@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProfile } from '../actions';
 import { View, Text, FlatList } from 'react-native';
 import SwipeScreenItem from './SwipeScreenItem';
+import { CardSection, Button } from './common';
 
 class SwipeScreen extends Component {
   componentWillMount() {
@@ -14,13 +15,30 @@ class SwipeScreen extends Component {
     return <SwipeScreenItem profile={profile} />;
   }
 
+  onEditProfileButtonPress() {
+    console.log(this.props);
+  }
+
+  renderEditProfileButton() {
+    return (
+      <Button onPress={this.onEditProfileButtonPress.bind(this)}>
+        Edit Profile
+      </Button>
+    )
+  }
+
   render () {
     return (
-      <FlatList
-        data={this.props.profiles}
-        renderItem={this.renderRow}
-        keyExtractor={profile => profile.uid}
-      />
+      <View>
+        <FlatList
+          data={this.props.profiles}
+          renderItem={this.renderRow}
+          keyExtractor={profile => profile.uid}
+        />
+        <CardSection>
+          {this.renderEditProfileButton()}
+        </CardSection>
+      </View>
     );
   }
 }
