@@ -3,6 +3,7 @@ import {
   AGE_CHANGED,
   BIO_CHANGED,
   PROFILE_UPDATE,
+  PROFILE_SAVE,
   PROFILE_CREATE
 } from '../actions/types';
 
@@ -23,6 +24,8 @@ export default (state = INITIAL_STATE, action) => {
     case PROFILE_UPDATE:
       return { ...state, [action.payload.prop]: action.payload.value };
     case PROFILE_CREATE:
+      return INITIAL_STATE;
+    case PROFILE_SAVE:
       return INITIAL_STATE;
     default:
       return state;

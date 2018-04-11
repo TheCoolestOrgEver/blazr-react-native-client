@@ -6,6 +6,7 @@ import {
   BIO_CHANGED,
   PROFILE_CREATE,
   PROFILE_UPDATE,
+  PROFILE_SAVE,
   PROFILE_FETCH_SUCCESS
 } from './types';
 
@@ -61,6 +62,15 @@ export const fetchProfile = () => {
   };
 };
 
-export const saveProfile = ({ }) => {
+export const saveProfile = ({ name, age, bio }) => {
+  const { currentUser } = firebase.auth();
 
+  return(dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/profile`)
+      .set({ name, age, bio })
+        .then(() => {
+          dispatch({ type: PROFILE_SAVE });
+          Actions.pop();
+        });
+  };
 };
