@@ -1,8 +1,11 @@
 import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
-import SwipeScreen from './components/SwipeScreen';
 import SignUpForm from './components/SignUpForm';
+import ProfileCreate from './components/ProfileCreate';
+import SwipeScreen from './components/SwipeScreen';
+import ProfileEdit from './components/ProfileEdit';
+
 
 const RouterComponent = () => {
   return (
@@ -10,7 +13,7 @@ const RouterComponent = () => {
       <Scene key="root" hideNavBar>
         <Scene key="auth">
           <Scene 
-            key="login" 
+            key="login"
             component={LoginForm} 
             title="Login" 
             initial 
@@ -22,13 +25,28 @@ const RouterComponent = () => {
           />
         </Scene>
         
+        <Scene key="profile">
+          <Scene
+            key="profile"
+            component={ProfileCreate}
+            title="Profile"
+            initial
+          />
+        </Scene>
+
         <Scene key="main">
           <Scene
-            rightTitle="Edit"
+            rightTitle="Edit Profile"
+            onRight={() => Actions.profileEdit()}
             key="swipeScreen"
             component={SwipeScreen}
             title="SwipeScreen"
             initial
+          />
+          <Scene
+            key="profileEdit"
+            component={ProfileEdit}
+            title="Edit Profile"
           />
         </Scene>
       </Scene>

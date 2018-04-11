@@ -81,6 +81,6 @@ const registerUserSuccess = (dispatch, user) => {
     payload: user
   });
 
-  Actions.main();
+  Actions.profile();
 };
 

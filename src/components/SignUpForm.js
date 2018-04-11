@@ -12,7 +12,7 @@ class SignUpForm extends Component {
   onPasswordChange(text) {
     this.props.passwordChanged(text);
   }
-
+  
   onSignUpButtonPress() {
     const { email, password } = this.props;
     this.props.registerUser({ email, password });
