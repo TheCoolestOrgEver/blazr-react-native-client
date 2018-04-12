@@ -36,9 +36,9 @@ const RouterComponent = () => {
 
         <Scene key="main">
           <Scene
-            rightTitle="Edit Profile"
-            onRight={() => Actions.profileEdit()}
-            key="swipeScreen"
+            //rightTitle="Edit Profile"
+            //onRight={() => Actions.profileEdit()}
+            key="swipeScreen" hideNavBar
             component={SwipeScreen}
             title="SwipeScreen"
             initial
