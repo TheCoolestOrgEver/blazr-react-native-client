@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { updateProfile, createProfile, fetchProfile } from '../actions';
 import { Card, CardSection, Button } from './common';
 import ProfileForm from './ProfileForm';
+import { View } from 'react-native';
 
 class ProfileCreate extends Component {
   onButtonPress() {
@@ -12,14 +13,14 @@ class ProfileCreate extends Component {
   
   render() {
     return (
-      <Card>
+      <View style={{flex: 1}}>
         <ProfileForm {...this.props} />
         <CardSection>
           <Button onPress={this.onButtonPress.bind(this)}>
             Create Profile
           </Button>
         </CardSection>
-      </Card>
+      </View>
     );
   }
 }

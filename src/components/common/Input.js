@@ -12,6 +12,7 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
         placeholder={placeholder}
         underlineColorAndroid='transparent'
         autoCorrect={false}
+        autoCapitalize='none'
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeText}

@@ -46,7 +46,7 @@ class LoginForm extends Component {
   render() {
     return (
     <View style={styles.viewStyle}>
-    <LinearGradient colors={['#7cffb6', '#ffb67c']} 
+    <LinearGradient colors={['#F52668', '#FD8A49']} 
     style={styles.backgroundStyle}
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 1 }}>
