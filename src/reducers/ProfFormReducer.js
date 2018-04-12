@@ -15,12 +15,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    // case NAME_CHANGED:
-    //   return { ...state, name: action.payload };
-    // case AGE_CHANGED:
-    //   return { ...state, age: action.payload };
-    // case BIO_CHANGED:
-    //   return { ...state, bio: action.payload };
     case PROFILE_UPDATE:
       return { ...state, [action.payload.prop]: action.payload.value };
     case PROFILE_CREATE:

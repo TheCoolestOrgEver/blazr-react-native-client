@@ -7,7 +7,8 @@ import {
   PROFILE_CREATE,
   PROFILE_UPDATE,
   PROFILE_SAVE,
-  PROFILE_FETCH_SUCCESS
+  PROFILE_FETCH_SUCCESS,
+  GET_USER
 } from './types';
 
 export const updateProfile = ({ prop, value }) => {
@@ -54,4 +55,17 @@ export const saveProfile = ({ name, age, bio, uid }) => {
           Actions.pop();
         });
   };
+};
+
+export const getUser = () => {
+  const { currentUser } = firebase.auth();
+  const usrid = currentUser.uid;
+  
+  return {
+    type: GET_USER,
+    payload: usrid
+  };
+  //  return (dispatch) => {
+  //    dispatch({ type: GET_USER, payload: usrid });
+  //  };
 };
