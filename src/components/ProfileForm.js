@@ -1,35 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
-import { updateProfile } from '../actions';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { updateProfile, imageChanged, displayImageChanged } from '../actions';
 import { Card, CardSection, Input } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import ImagePicker from 'react-native-image-picker';
 
 class ProfileForm extends Component {
-  // onNameChange(text) {
-  //   this.props.nameChanged(text);
-  // }
 
-  // onAgeChange(text) {
-  //   this.props.ageChanged(text);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = { imagePath: 'https://facebook.github.io/react-native/docs/assets/favicon.png' };
+  }
 
-  // onBioChange(text) {
-  //   this.props.bioChanged(text);
-  // }
+  // Open Image Library:
+  onSelectImageButtonPress() {
+    ImagePicker.launchImageLibrary(options, (response)  => {
+      console.log('Response = ', response);
 
-  // onCreateProfileButtonPress() {
-  //   const { name, age, bio } = this.props;
-  //   this.props.createProfile({ name, age, bio });
-  // }
-
-  // renderCreateProfileButton() {
-  //   return (
-  //     <Button onPress={this.onCreateProfileButtonPress.bind(this)}>
-  //       Create Profile
-  //     </Button> 
-  //   )
-  // }
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else {
+        let source = response.origURL;
+        console.log('profile form source', source);
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+    
+        // this.setState({
+        //   imagePath: response.uri
+        // });
+        this.props.displayImageChanged(response.uri);
+        this.props.imageChanged(source);
+      }    
+    });
+  }
 
   render () {
     return (
@@ -38,10 +46,12 @@ class ProfileForm extends Component {
         style={styles.backgroundStyle}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}>
-          <Text style={styles.headerStyle}>
-            Edit {"\n"} 
-            your info
-          </Text>
+          <TouchableOpacity onPress={() => this.onSelectImageButtonPress()}>
+          <Image
+          style={ styles.imageStyle }
+          source={{ uri: this.props.displayImage }}
+          />
+          </TouchableOpacity>
           <Card>
             <CardSection>
               <Input
@@ -78,6 +88,10 @@ class ProfileForm extends Component {
   }
 }
 
+const options = {
+  title: 'Select Profile Pic'
+};
+
 const styles = {
   errorTextStyle: {
     fontSize: 20,
@@ -96,15 +110,20 @@ const styles = {
     color: 'white',
     fontSize: 30,
     backgroundColor: 'transparent'
+  },
+  imageStyle: {
+    width: 200, 
+    height: 200, 
+    alignSelf: 'center'
   }
 };
 
 const mapStateToProps = (state) => {
-  const { name, age, bio } = state.profForm;
+  const { name, age, bio, imageUri, displayImage } = state.profForm;
 
-  return { name, age, bio };
+  return { name, age, bio, imageUri, displayImage };
 };
 
 export default connect(mapStateToProps, {
-  updateProfile
+  updateProfile, imageChanged, displayImageChanged
 })(ProfileForm);

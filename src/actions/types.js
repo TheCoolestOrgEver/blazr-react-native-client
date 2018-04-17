@@ -3,6 +3,8 @@ export const PASSWORD_CHANGED = 'password_changed';
 export const NAME_CHANGED = 'name_changed';
 export const AGE_CHANGED = 'age_changed';
 export const BIO_CHANGED = 'bio_changed';
+export const IMAGE_CHANGED = 'image_changed';
+export const DISPLAY_IMAGE_CHANGED = 'display_image_changed';
 
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';

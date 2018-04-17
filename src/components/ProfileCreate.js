@@ -7,8 +7,9 @@ import { View } from 'react-native';
 
 class ProfileCreate extends Component {
   onButtonPress() {
-    const { name, age, bio } = this.props;
-    this.props.createProfile({ name, age, bio });
+    const { name, age, bio, imageUri } = this.props;
+    console.log('profile form create', imageUri);
+    this.props.createProfile({ name, age, bio, imageUri});
   }
   
   render() {
@@ -26,8 +27,8 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { name, age, bio } = state.profForm;
-  return { name, age, bio };
+  const { name, age, bio, imageUri } = state.profForm;
+  return { name, age, bio, imageUri };
 };
 
 export default connect(mapStateToProps, {
