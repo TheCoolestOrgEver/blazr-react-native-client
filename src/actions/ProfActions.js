@@ -9,6 +9,7 @@ import {
   DISPLAY_IMAGE_CHANGED
 } from './types';
 import RNFetchBlob from 'react-native-fetch-blob'
+var Config = require('../../config.json')
 
 export const updateProfile = ({ prop, value }) => {
   console.log('update form actions', value);
@@ -18,10 +19,10 @@ export const updateProfile = ({ prop, value }) => {
   };
 };
 
-export const imageChanged = (imageUri) => {
+export const imageChanged = (imageData) => {
   return {
     type: IMAGE_CHANGED,
-    payload: imageUri
+    payload: imageData
   };
 };
 
@@ -36,14 +37,16 @@ export const createProfile = ({ name, age, bio, imageUri }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
   console.log('profile form actions', imageUri);
-  uploadProfilePicture({ imageUri });
+
   return(dispatch) => {
-    firebase.database().ref(`/profiles`)
-      .push({ name, age, bio, usrid })
+    uploadProfilePicture({ imageUri }).then((imgurURL) => { 
+      firebase.database().ref(`/profiles`)
+      .push({ name, age, bio, usrid, imgurURL })
         .then(() => {
           dispatch({ type: PROFILE_CREATE });
           Actions.main();
-        });
+      })
+    });
   };
 };
 
@@ -52,11 +55,12 @@ export const uploadProfilePicture = ({ imageUri }) =>{
     return RNFetchBlob.fetch('POST', 'https://api.imgur.com/3/image', {
         Accept: 'application/json',
         'Content-Type': 'application/octet-stream',
-        'Authorization': 'Client-ID fb450746b88443d',
+        'Authorization': 'Client-ID ' + Config.IMGUR_CLIENT_ID,
       }, RNFetchBlob.wrap( imageUri )) 
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data.link)
+        return response.data.link;
       })
       .catch((error) => {
         console.error(error);
