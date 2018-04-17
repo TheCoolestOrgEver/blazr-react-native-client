@@ -5,31 +5,6 @@ import { updateProfile } from '../actions';
 import { CardSection, Input } from './common';
 
 class ProfileForm extends Component {
-  // onNameChange(text) {
-  //   this.props.nameChanged(text);
-  // }
-
-  // onAgeChange(text) {
-  //   this.props.ageChanged(text);
-  // }
-
-  // onBioChange(text) {
-  //   this.props.bioChanged(text);
-  // }
-
-  // onCreateProfileButtonPress() {
-  //   const { name, age, bio } = this.props;
-  //   this.props.createProfile({ name, age, bio });
-  // }
-
-  // renderCreateProfileButton() {
-  //   return (
-  //     <Button onPress={this.onCreateProfileButtonPress.bind(this)}>
-  //       Create Profile
-  //     </Button> 
-  //   )
-  // }
-
   render () {
     return (
       <View>
