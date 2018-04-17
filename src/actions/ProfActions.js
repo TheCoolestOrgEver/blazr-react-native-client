@@ -6,7 +6,8 @@ import {
   PROFILE_SAVE,
   PROFILE_FETCH_SUCCESS,
   IMAGE_CHANGED,
-  DISPLAY_IMAGE_CHANGED
+  DISPLAY_IMAGE_CHANGED,
+  GET_USER
 } from './types';
 import RNFetchBlob from 'react-native-fetch-blob'
 var Config = require('../../config.json')
@@ -90,4 +91,17 @@ export const saveProfile = ({ name, age, bio, uid }) => {
           Actions.pop();
         });
   };
+};
+
+export const getUser = () => {
+  const { currentUser } = firebase.auth();
+  const usrid = currentUser.uid;
+  
+  return {
+    type: GET_USER,
+    payload: usrid
+  };
+  //  return (dispatch) => {
+  //    dispatch({ type: GET_USER, payload: usrid });
+  //  };
 };
