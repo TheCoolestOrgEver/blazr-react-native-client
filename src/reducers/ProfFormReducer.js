@@ -1,7 +1,6 @@
 import {
-  NAME_CHANGED,
-  AGE_CHANGED,
-  BIO_CHANGED,
+  IMAGE_CHANGED,
+  DISPLAY_IMAGE_CHANGED,
   PROFILE_UPDATE,
   PROFILE_SAVE,
   PROFILE_CREATE
@@ -10,15 +9,21 @@ import {
 const INITIAL_STATE = {
   name: '',
   age: '',
-  bio: ''
+  bio: '', 
+  imageUri: '',
+  displayImage: 'https://facebook.github.io/react-native/docs/assets/favicon.png'
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case DISPLAY_IMAGE_CHANGED:
+      return { ...state, displayImage: action.payload };
+    case IMAGE_CHANGED:
+      return { ...state, imageUri: action.payload };
     case PROFILE_UPDATE:
       return { ...state, [action.payload.prop]: action.payload.value };
     case PROFILE_CREATE:
-      return INITIAL_STATE;
+      return state;
     case PROFILE_SAVE:
       return INITIAL_STATE;
     default:

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
 import { Button, Card, CardSection, Input, Spinner } from './common';
+import LinearGradient from 'react-native-linear-gradient';
 
 class SignUpForm extends Component {
   onEmailChange(text) {
@@ -40,6 +41,15 @@ class SignUpForm extends Component {
 
   render () {
     return (
+    <View style={styles.viewStyle}>
+     <LinearGradient colors={['#2E23F3', '#F52668']} 
+      style={styles.backgroundStyle}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}>
+      <Text style={styles.headerStyle}>
+        Create {"\n"} 
+        your account
+      </Text>
       <Card>
         <CardSection>
           <Input
@@ -49,7 +59,8 @@ class SignUpForm extends Component {
             value={this.props.email}
           />
         </CardSection>
-
+        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
+        </View>
         <CardSection>
           <Input
             secureTextEntry
@@ -59,15 +70,22 @@ class SignUpForm extends Component {
             value={this.props.password}
           />
         </CardSection>
-
-        <Text style={styles.errorTextStyle}>
-          {this.props.error}
-        </Text>
-
+        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
+        </View>
         <CardSection>
-          {this.renderSignUpButton()}
+          <Input
+            secureTextEntry
+            label='Confirm password'
+            placeholder='password'
+            value={this.props.password}
+          />
         </CardSection>
       </Card>
+      </LinearGradient>
+      <CardSection>
+          {this.renderSignUpButton()}
+      </CardSection>
+    </View>
     )
   }
 }
@@ -77,6 +95,19 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'
+  },
+  backgroundStyle: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  viewStyle: {
+    flex: 1,
+  },
+  headerStyle: {
+    margin: 10,
+    color: 'white',
+    fontSize: 30,
+    backgroundColor: 'transparent'
   }
 };
 

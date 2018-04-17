@@ -12,6 +12,7 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
         placeholder={placeholder}
         underlineColorAndroid='transparent'
         autoCorrect={false}
+        autoCapitalize='none'
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeText}
@@ -36,10 +37,10 @@ const styles = {
     flex: 1
   },
   containerStyle: {
-    height: 40,
+    height: 55,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center', 
   }
 };
 
