@@ -1,17 +1,46 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Keyboard, Animated, Dimensions } from 'react-native';
 import { updateProfile, imageChanged, displayImageChanged } from '../actions';
 import { Card, CardSection, Input } from './common';
 import LinearGradient from 'react-native-linear-gradient';
 import ImagePicker from 'react-native-image-picker';
+const window = Dimensions.get('window');
+const IMAGE_HEIGHT = window.width / 2;
+const IMAGE_HEIGHT_SMALL = window.width /5;
 
 class ProfileForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = { imagePath: 'https://facebook.github.io/react-native/docs/assets/favicon.png' };
+    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
+
+  componentWillMount () {
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+
+  keyboardWillShow = (event) => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardWillHide = (event) => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
+
 
   // Open Image Library:
   onSelectImageButtonPress() {
@@ -40,15 +69,18 @@ class ProfileForm extends Component {
   }
 
   render () {
+
     return (
-     <View style={styles.viewStyle}>
+     <View 
+     style={styles.viewStyle}
+     >
        <LinearGradient colors={['#2E23F3', '#F52668']} 
         style={styles.backgroundStyle}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}>
           <TouchableOpacity onPress={() => this.onSelectImageButtonPress()}>
-          <Image
-          style={ styles.imageStyle }
+          <Animated.Image
+          style={ { alignSelf: 'center', height: this.imageHeight, width: this.imageHeight } }
           source={{ uri: this.props.displayImage }}
           />
           </TouchableOpacity>
@@ -110,11 +142,6 @@ const styles = {
     color: 'white',
     fontSize: 30,
     backgroundColor: 'transparent'
-  },
-  imageStyle: {
-    width: 200, 
-    height: 200, 
-    alignSelf: 'center'
   }
 };
 

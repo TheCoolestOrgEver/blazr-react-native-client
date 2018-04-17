@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProfile, getUser } from '../actions';
-import { Text, FlatList, Image } from 'react-native';
+import { Text, FlatList, Image, SafeAreaView } from 'react-native';
 import SwipeScreenItem from './SwipeScreenItem';
 import ProfileEditItem from './ProfileEditItem';
 import DeckSwipe from './DeckSwipe';
@@ -69,7 +69,7 @@ class SwipeScreen extends Component {
       // 1st flist edits user
       // 2nd displays all other profiles
       
-      <View>
+      <SafeAreaView>
       {/*}
         <FlatList
           data={this.props.profiles}
@@ -86,7 +86,7 @@ class SwipeScreen extends Component {
       
       <DeckSwipe data={this.props.arr}/>
 
-      </View>
+      </SafeAreaView>
     );
   }
 }

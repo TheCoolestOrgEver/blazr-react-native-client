@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { updateProfile, createProfile, fetchProfile } from '../actions';
 import { Card, CardSection, Button } from './common';
 import ProfileForm from './ProfileForm';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class ProfileCreate extends Component {
   onButtonPress() {
@@ -13,15 +14,21 @@ class ProfileCreate extends Component {
   }
   
   render() {
+    const navBarHeight = isIphoneX() ? 88 : 64
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior="padding"
+      keyboardVerticalOffset={navBarHeight}>
         <ProfileForm {...this.props} />
         <CardSection>
           <Button onPress={this.onButtonPress.bind(this)}>
             Create Profile
           </Button>
         </CardSection>
-      </View>
+      </KeyboardAvoidingView>
+      </SafeAreaView>
     );
   }
 }

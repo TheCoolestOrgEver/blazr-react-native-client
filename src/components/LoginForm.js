@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView } from 'react-native';
 import { emailChanged, passwordChanged, loginUser, signUpRedirect } from '../actions';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -44,8 +45,17 @@ class LoginForm extends Component {
   }
 
   render() {
+    const bottomPadding = isIphoneX() ? (
+      <View style={{height: 35, backgroundColor: '#ffffff'}}>
+      </View>
+    ) : (
+      <View></View>
+    );
     return (
-    <View style={styles.viewStyle}>
+    <View style={{flex: 1}}>
+    <KeyboardAvoidingView
+    style={styles.viewStyle}
+    behavior="padding">
     <LinearGradient colors={['#F52668', '#FD8A49']} 
     style={styles.backgroundStyle}
     start={{ x: 0, y: 0 }}
@@ -76,7 +86,7 @@ class LoginForm extends Component {
         </CardSection>
       </Card>
     </LinearGradient>
-      <CardSection >
+    <CardSection >
         {this.renderLoginButton()}
       </CardSection>
       <View style={{height: 1}}>
@@ -84,6 +94,8 @@ class LoginForm extends Component {
       <CardSection>
         {this.renderSignUpButton()}
       </CardSection>
+    </KeyboardAvoidingView>
+    {bottomPadding}
     </View>
     );
   }

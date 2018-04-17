@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class SignUpForm extends Component {
   onEmailChange(text) {
@@ -40,8 +41,15 @@ class SignUpForm extends Component {
   }
 
   render () {
+    const navBarHeight = isIphoneX() ? 88 : 64
     return (
-    <View style={styles.viewStyle}>
+    <SafeAreaView 
+    style={{flex:1, backgroundColor: '#ffffff'}}
+    >
+    <KeyboardAvoidingView 
+      style={styles.viewStyle}
+      behavior="padding"
+      keyboardVerticalOffset={navBarHeight}>
      <LinearGradient colors={['#2E23F3', '#F52668']} 
       style={styles.backgroundStyle}
       start={{ x: 0, y: 0 }}
@@ -85,7 +93,8 @@ class SignUpForm extends Component {
       <CardSection>
           {this.renderSignUpButton()}
       </CardSection>
-    </View>
+    </KeyboardAvoidingView>
+    </SafeAreaView>
     )
   }
 }
