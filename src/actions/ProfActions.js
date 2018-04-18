@@ -79,17 +79,19 @@ export const fetchProfile = () => {
   };
 };
 
-export const saveProfile = ({ name, age, bio, uid }) => {
+export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
 
   return(dispatch) => {
-    firebase.database().ref(`/profiles/${uid}`)
-      .set({ name, age, bio, usrid })
+    uploadProfilePicture({ imageUri }).then((imgurURL) => {
+      firebase.database().ref(`/profiles/${uid}`)
+      .set({ name, age, bio, imgurURL, usrid })
         .then(() => {
           dispatch({ type: PROFILE_SAVE });
           Actions.pop();
-        });
+        })
+      });
   };
 };
 

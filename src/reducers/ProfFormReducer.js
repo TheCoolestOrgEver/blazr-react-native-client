@@ -25,7 +25,7 @@ export default (state = INITIAL_STATE, action) => {
     case PROFILE_CREATE:
       return state;
     case PROFILE_SAVE:
-      return INITIAL_STATE;
+      return state;
     default:
       return state;
   }

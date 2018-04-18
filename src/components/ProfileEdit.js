@@ -14,8 +14,8 @@ class ProfileEdit extends Component {
   }
 
   onEditProfileButtonPress() {
-    const { name, age, bio } = this.props;
-    this.props.saveProfile({ name, age, bio, uid: this.props.profile.uid });
+    const { name, age, bio, imageUri } = this.props;
+    this.props.saveProfile({ name, age, bio, imageUri, uid: this.props.profile.uid });
   }
 
   renderEditProfileButton() {
@@ -39,9 +39,9 @@ class ProfileEdit extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { name, age, bio } = state.profForm;
+  const { name, age, bio, imageUri } = state.profForm;
 
-  return { name, age, bio };
+  return { name, age, bio, imageUri };
 };
 
 export default connect(mapStateToProps, {
