@@ -10,7 +10,7 @@ import ProfileEdit from './components/ProfileEdit';
 const RouterComponent = () => {
   return (
     <Router>
-      <Scene key="root" hideNavBar>
+      <Scene key="root" hideNavBar panHandlers={null}>
         <Scene key="auth">
           <Scene 
             key="login" hideNavBar

@@ -31,7 +31,7 @@ class DeckSwipe extends Component {
     console.log(cards1[0]);
     //cards1[0] = cards[0];
 
-    console.log(typeof cards);
+    console.log('cards', cards);
     console.log(typeof cards1);
     return (
       <Container>
@@ -39,15 +39,15 @@ class DeckSwipe extends Component {
         <View>
           <DeckSwiper
             ref={(c) => this._deckSwiper = c}
-            dataSource={cards1}
-            //looping={false}
+            dataSource={cards}
+            looping={false}
             onSwipeLeft={() => {console.log("You swiped left")}}
             onSwipeRight={() => {console.log("You swiped right")}}
             renderItem={item =>
               <Card style={{ elevation: 3 }}>
                 <CardItem>
                   <Left>
-                  <Thumbnail source={require('./common/palmer_residence.jpg')} />
+                  <Thumbnail source={{uri: item.imageURL}} />
                       {/*<Thumbnail source={item.image} />*/}
                     <Body>
                       {/*<Text>{item.text}</Text>*/}
@@ -57,7 +57,7 @@ class DeckSwipe extends Component {
                   </Left>
                 </CardItem>
                 <CardItem cardBody>
-                <Image style={{ height: 300, flex: 1 }} source={require('./common/palmer_residence.jpg')} />
+                <Image style={{ height: 300, flex: 1 }} source={{uri: item.imageURL}} />
                     {/*<Image style={{ height: 300, flex: 1 }} source={item.image} />*/}
                 </CardItem>
                 <CardItem>

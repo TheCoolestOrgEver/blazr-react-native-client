@@ -37,19 +37,29 @@ export const displayImageChanged = (displayImage) => {
 export const createProfile = ({ name, age, bio, imageUri }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
-  console.log('profile form actions', imageUri);
-
   return(dispatch) => {
     uploadProfilePicture({ imageUri }).then((imgurURL) => { 
-      firebase.database().ref(`/profiles`)
-      .push({ name, age, bio, usrid, imgurURL })
-        .then(() => {
-          dispatch({ type: PROFILE_CREATE });
-          Actions.main();
+      console.log(imgurURL)
+      return fetch('http://' + Config.HOST + ':8080/profile/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'appliation/json',
+      },
+      body: JSON.stringify({"userID": usrid, "name": name, "age": parseInt(age), "bio": bio, "imageURL": imgurURL, "location": {lat: 0.51745076604, long: -1.4371718249}})
       })
-    });
-  };
-};
+    })
+    .then((response) => console.log(response))
+    .then((response) => {
+      console.log('Create profile response: ', response);
+      dispatch({ type: PROFILE_CREATE });
+      Actions.main();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+}
 
 export const uploadProfilePicture = ({ imageUri }) =>{
     
@@ -60,7 +70,7 @@ export const uploadProfilePicture = ({ imageUri }) =>{
       }, RNFetchBlob.wrap( imageUri )) 
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.data.link)
+        //console.log(response.data.link)
         return response.data.link;
       })
       .catch((error) => {
@@ -72,11 +82,20 @@ export const fetchProfile = () => {
   const { currentUser } = firebase.auth();
 
   return (dispatch) => {
-    firebase.database().ref(`/profiles`)
-      .on('value', snapshot => {
-        dispatch({ type: PROFILE_FETCH_SUCCESS, payload: snapshot.val()});
-      });
-  };
+    return fetch('http://' + Config.HOST + ':8080/profiles/?radius=10&lat=0.51745076604&long=-1.4371718249', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      console.log('fetch profile response', JSON.stringify(response));
+      dispatch({ type: PROFILE_FETCH_SUCCESS, payload: response});
+    })
+  }
 };
 
 export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
@@ -84,15 +103,27 @@ export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
   const usrid = currentUser.uid;
 
   return(dispatch) => {
-    uploadProfilePicture({ imageUri }).then((imgurURL) => {
-      firebase.database().ref(`/profiles/${uid}`)
-      .set({ name, age, bio, imgurURL, usrid })
-        .then(() => {
-          dispatch({ type: PROFILE_SAVE });
-          Actions.pop();
-        })
-      });
-  };
+    uploadProfilePicture({ imageUri }).then((imgurURL) => { 
+      console.log(imgurURL)
+      return fetch('http://' + Config.HOST + ':8080/profile/', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'appliation/json',
+      },
+      body: JSON.stringify({"userID": uid, "name": name, "age": parseInt(age), "bio": bio, "imageURL": imgurURL, "location": {lat: 0.51745076604, long: -1.4371718249}})
+      })
+    })
+    .then((response) => console.log(response))
+    .then((response) => {
+      console.log('Create profile response: ', response);
+      dispatch({ type: PROFILE_SAVE });
+      Actions.main();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
 };
 
 export const getUser = () => {

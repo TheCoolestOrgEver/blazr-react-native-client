@@ -84,7 +84,7 @@ class SwipeScreen extends Component {
         />
       */}
       
-      <DeckSwipe data={this.props.arr}/>
+      <DeckSwipe data={this.props.snapshot}/>
 
       </SafeAreaView>
     );
@@ -93,12 +93,12 @@ class SwipeScreen extends Component {
 
 const mapStateToProps = state => {
   const snapshot = state.prof;
-  const arr = [];
-  //console.log(state.prof);
-  const profiles = _.map(state.prof, (val, uid) => {
-    arr.push(val);
-    return { ...val, uid };
-  });
+  // const arr = [];
+  // //console.log(state.prof);
+  // const profiles = _.map(state.prof, (val, uid) => {
+  //   arr.push(val);
+  //   return { ...val, uid };
+  // });
 
   //const jProf = JSON.parse(profiles);
   //console.log(jProf);
@@ -107,7 +107,7 @@ const mapStateToProps = state => {
   // console.log('this is the array!!!!!!!');
   // console.log(arr);
 
-  return { profiles, snapshot, arr };
+  return { snapshot };
 };
 
 export default connect(mapStateToProps, { fetchProfile, getUser })(SwipeScreen);
