@@ -78,11 +78,11 @@ export const uploadProfilePicture = ({ imageUri }) =>{
       });
 }
 
-export const fetchProfile = () => {
+export const fetchProfile = ( latitude, longitude ) => {
   const { currentUser } = firebase.auth();
-
+  console.log('lat: ' + latitude);
   return (dispatch) => {
-    return fetch('http://' + Config.HOST + ':8080/profiles/?radius=10&lat=0.51745076604&long=-1.4371718249', {
+    return fetch('http://' + Config.HOST + ':8080/profiles/?radius=10&lat=' + latitude + '&long=' + longitude, {
       method: 'GET',
       headers: {
         Accept: 'application/json'
@@ -98,7 +98,7 @@ export const fetchProfile = () => {
   }
 };
 
-export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
+export const saveProfile = ({ name, age, bio, imageUri, lat, long, uid }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
 
@@ -111,12 +111,12 @@ export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
         Accept: 'application/json',
         'Content-Type': 'appliation/json',
       },
-      body: JSON.stringify({"userID": uid, "name": name, "age": parseInt(age), "bio": bio, "imageURL": imgurURL, "location": {lat: 0.51745076604, long: -1.4371718249}})
+      body: JSON.stringify({"userID": usrid, "name": name, "age": parseInt(age), "bio": bio, "imageURL": imgurURL, "location": {lat: 0.51745076604, long: -1.4371718249}})
       })
     })
     .then((response) => console.log(response))
     .then((response) => {
-      console.log('Create profile response: ', response);
+      console.log('Update profile response: ', response);
       dispatch({ type: PROFILE_SAVE });
       Actions.main();
     })

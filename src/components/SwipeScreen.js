@@ -1,17 +1,39 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProfile, getUser } from '../actions';
+import { fetchProfile, getUser, saveProfile } from '../actions';
 import { Text, FlatList, Image, SafeAreaView } from 'react-native';
 import SwipeScreenItem from './SwipeScreenItem';
 import ProfileEditItem from './ProfileEditItem';
 import DeckSwipe from './DeckSwipe';
 import { CardSection, Button } from './common';
 import { Container, View, Header, DeckSwiper, Card, CardItem, Thumbnail, Left, Body, Icon } from 'native-base';
-
+import { getProfile, updateLocation } from './Helper.js'
 class SwipeScreen extends Component {
-  componentWillMount() {
-    this.props.fetchProfile();
+
+  toRadians (angle) {
+    return angle * (Math.PI / 180);
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: this.toRadians(position.coords.latitude),
+          longitude: this.toRadians(position.coords.longitude),
+          error: null,
+        });
+        getProfile().then((response) => {
+          console.log('this is the response from get profile', response.age)
+          updateLocation( this.state.latitude, this.state.longitude )
+          .then((response) => {
+            return this.props.fetchProfile(response.location.Lat, response.location.Long);
+          });
+        })
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   snapshotToArray(snapshot) {
@@ -110,4 +132,4 @@ const mapStateToProps = state => {
   return { snapshot };
 };
 
-export default connect(mapStateToProps, { fetchProfile, getUser })(SwipeScreen);
+export default connect(mapStateToProps, { fetchProfile, getUser, saveProfile })(SwipeScreen);

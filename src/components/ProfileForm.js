@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Keyboard, Animated, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Keyboard, Animated, Dimensions, Slider } from 'react-native';
 import { updateProfile, imageChanged, displayImageChanged } from '../actions';
 import { Card, CardSection, Input } from './common';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +15,9 @@ class ProfileForm extends Component {
     super(props);
     this.state = { imagePath: 'https://facebook.github.io/react-native/docs/assets/favicon.png' };
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
+    this.state = {
+      value: 50,
+    };
   }
 
   componentWillMount () {
@@ -68,8 +71,16 @@ class ProfileForm extends Component {
     });
   }
 
-  render () {
+  change(value) {
+    this.setState(() => {
+      return {
+        value: parseFloat(value),
+      };
+    });
+  }
 
+  render () {
+    const {value} = this.state;
     return (
      <View 
      style={styles.viewStyle}
@@ -113,7 +124,16 @@ class ProfileForm extends Component {
                 onChangeText={value => this.props.updateProfile({ prop: 'bio', value})}
               />
             </CardSection>
-          </Card>
+            </Card>
+            <Text style={styles.headerStyle}>
+              Set your search radius
+            </Text>
+            <Slider
+              step={1}
+              maximumValue={100}
+              onValueChange={this.change.bind(this)}
+              value={value}
+            />
         </LinearGradient>
       </View>
     )
@@ -140,7 +160,7 @@ const styles = {
   headerStyle: {
     margin: 10,
     color: 'white',
-    fontSize: 30,
+    fontSize: 15,
     backgroundColor: 'transparent'
   }
 };

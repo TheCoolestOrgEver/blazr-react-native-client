@@ -34,13 +34,13 @@ const RouterComponent = () => {
           />
         </Scene>
 
-        <Scene key="main">
+        <Scene key="main" navigationBarStyle={{ backgroundColor: '#F52668' }}>
           <Scene
             //rightTitle="Edit Profile"
             //onRight={() => Actions.profileEdit()}
-            key="swipeScreen" hideNavBar
+            key="swipeScreen"
             component={SwipeScreen}
-            title="SwipeScreen"
+            title=""
             initial
           />
           <Scene
