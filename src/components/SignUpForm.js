@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Button, Card, CardSection, ButtonSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
@@ -32,14 +32,6 @@ class SignUpForm extends Component {
     )
   }
 
-  renderSignUpButton() {
-    return (
-      <Button onPress={this.onSignUpButtonPress.bind(this)}>
-        Sign Up
-      </Button>
-    )
-  }
-
   render () {
     const navBarHeight = isIphoneX() ? 88 : 64
     return (
@@ -58,41 +50,40 @@ class SignUpForm extends Component {
         Create {"\n"} 
         your account
       </Text>
-      <Card>
-        <CardSection>
-          <Input
-            label='Email'
-            placeholder='email@gmail.com'
-            onChangeText={this.onEmailChange.bind(this)}
-            value={this.props.email}
-          />
-        </CardSection>
-        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-        </View>
-        <CardSection>
-          <Input
-            secureTextEntry
-            label='Password'
-            placeholder='password'
-            onChangeText={this.onPasswordChange.bind(this)}
-            value={this.props.password}
-          />
-        </CardSection>
-        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-        </View>
-        <CardSection>
-          <Input
-            secureTextEntry
-            label='Confirm password'
-            placeholder='password'
-            value={this.props.password}
-          />
-        </CardSection>
-      </Card>
-      </LinearGradient>
       <CardSection>
-          {this.renderSignUpButton()}
+        <Input
+          label='Email'
+          placeholder='email@gmail.com'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
+        />
       </CardSection>
+      <View style={{height: 2, opacity: 0}}>
+      </View>
+      <CardSection>
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='password'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+      </CardSection>
+      <View style={{height: 2, opacity: 0}}>
+      </View>
+      <CardSection>
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='confirm password'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+      </CardSection>
+      </LinearGradient>
+      <ButtonSection>
+          {this.renderSignUpButton()}
+      </ButtonSection>
     </KeyboardAvoidingView>
     </SafeAreaView>
     )

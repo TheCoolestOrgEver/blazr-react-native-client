@@ -78,13 +78,13 @@ class DeckSwipe extends Component {
           />
         </View>
         <View style={{ flexDirection: "row", flex: 1, position: "absolute", top: window.height*0.55 + 90, bottom: 0, left: 0, right: 0, justifyContent: 'center', padding: 15 }}>
-          <TouchableOpacity iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
-            <Icon raised name='x'type='feather' size={50} color='#F52668' />
+          <TouchableOpacity iconLeft >
+            <Icon raised onPress={() => this._deckSwiper._root.swipeLeft()} name='x'type='feather' size={50} color='#F52668' />
           </TouchableOpacity>
           <View style={{width: 10}}>
           </View>
-          <TouchableOpacity iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
-            <Icon raised name='heart'type='font-awesome' size={50} color='#7cffb6' />
+          <TouchableOpacity >
+            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight()}} name='heart'type='font-awesome' size={50} color='#7cffb6' />
           </TouchableOpacity>
         </View>
       </Container>

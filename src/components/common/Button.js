@@ -26,6 +26,9 @@ const styles = {
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: '#2E23F3',
+    // borderRadius: 20,
+    // borderWidth: 1,
+    // borderColor: '#2E23F3',
   }
 }
 

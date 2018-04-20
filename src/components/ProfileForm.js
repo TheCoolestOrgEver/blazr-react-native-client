@@ -79,40 +79,40 @@ class ProfileForm extends Component {
         end={{ x: 1, y: 1 }}>
           <TouchableOpacity onPress={() => this.onSelectImageButtonPress()}>
           <Animated.Image
-          style={ { alignSelf: 'center', height: this.imageHeight, width: this.imageHeight } }
+          style={ { alignSelf: 'center', height: this.imageHeight, width: this.imageHeight, borderRadius: 15 } }
           source={{ uri: this.props.displayImage }}
           />
           </TouchableOpacity>
-          <Card>
-            <CardSection>
-              <Input
-                label='Name'
-                placeholder='First Last'
-                value={this.props.name}
-                onChangeText={value => this.props.updateProfile({ prop: 'name', value})}
-              />
-            </CardSection>
-            <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-            </View>
-            <CardSection>
-              <Input
-                label='Age'
-                placeholder='102'
-                value={this.props.age}
-                onChangeText={value => this.props.updateProfile({ prop: 'age', value})}
-              />
-            </CardSection>
-            <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-            </View>
-            <CardSection>
-              <Input
-                label='Bio'
-                placeholder='tell us about yourself'
-                value={this.props.bio}
-                onChangeText={value => this.props.updateProfile({ prop: 'bio', value})}
-              />
-            </CardSection>
-            </Card>
+          <View style={{height: 10, opacity: 0}}>
+          </View>
+          <CardSection>
+            <Input
+              label='Name'
+              placeholder='First Last'
+              value={this.props.name}
+              onChangeText={value => this.props.updateProfile({ prop: 'name', value})}
+            />
+          </CardSection>
+          <View style={{height: 2, opacity: 0}}>
+          </View>
+          <CardSection>
+            <Input
+              label='Age'
+              placeholder='102'
+              value={this.props.age}
+              onChangeText={value => this.props.updateProfile({ prop: 'age', value})}
+            />
+          </CardSection>
+          <View style={{height: 2, opacity: 0}}>
+          </View>
+          <CardSection>
+            <Input
+              label='Bio'
+              placeholder='tell us about yourself'
+              value={this.props.bio}
+              onChangeText={value => this.props.updateProfile({ prop: 'bio', value})}
+            />
+          </CardSection>
         </LinearGradient>
       </View>
     )

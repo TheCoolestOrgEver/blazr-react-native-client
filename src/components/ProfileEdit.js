@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateProfile, saveProfile, fetchProfile } from '../actions';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection, ButtonSection, Button } from './common';
 import ProfileForm from './ProfileForm';
 import { View, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
@@ -10,8 +10,27 @@ import { getProfile } from './Helper.js'
 
 class ProfileEdit extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false
+    }
+  }
+
   componentWillMount() {
 
+  }
+
+  renderSaveButton() {
+    if (this.state.loading) {
+      return <Spinner size='large' />;
+    }
+
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>
+        Save Changes
+      </Button>
+    )
   }
 
   onButtonPress() {
@@ -19,6 +38,7 @@ class ProfileEdit extends Component {
     const usrid = currentUser.uid;
     const { name, age, bio, imageUri } = this.props;
     console.log('profile form create', imageUri);
+    this.setState({loading: true});
     this.props.saveProfile({ name, age, bio, imageUri, usrid});
   }
   
@@ -31,11 +51,9 @@ class ProfileEdit extends Component {
       behavior="padding"
       keyboardVerticalOffset={navBarHeight}>
         <ProfileForm {...this.props} />
-        <CardSection>
-          <Button onPress={this.onButtonPress.bind(this)}>
-            Save Changes
-          </Button>
-        </CardSection>
+        <ButtonSection>
+          {this.renderSaveButton()}
+        </ButtonSection>
       </KeyboardAvoidingView>
       </SafeAreaView>
     );
