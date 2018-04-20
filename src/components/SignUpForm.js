@@ -116,6 +116,7 @@ const styles = {
     margin: 10,
     color: 'white',
     fontSize: 30,
+    fontFamily: 'GothamRounded-Book',
     backgroundColor: 'transparent'
   }
 };

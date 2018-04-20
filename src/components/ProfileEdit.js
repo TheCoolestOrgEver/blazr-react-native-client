@@ -1,49 +1,46 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
 import { updateProfile, saveProfile, fetchProfile } from '../actions';
-import { Button, Card, CardSection, Input } from './common';
+import { Card, CardSection, Button } from './common';
 import ProfileForm from './ProfileForm';
+import { View, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
+import firebase from 'firebase';
 
 class ProfileEdit extends Component {
-  componentWillMount() {
-    _.each(this.props.profile, (value, prop) => {
-      this.props.updateProfile({ prop, value })
-    });
-  }
-
-  onEditProfileButtonPress() {
+  onButtonPress() {
+    const { currentUser } = firebase.auth();
+    const usrid = currentUser.uid;
     const { name, age, bio, imageUri } = this.props;
-    this.props.saveProfile({ name, age, bio, imageUri, uid: this.props.profile.uid });
+    console.log('profile form create', imageUri);
+    this.props.saveProfile({ name, age, bio, imageUri, usrid});
   }
-
-  renderEditProfileButton() {
+  
+  render() {
+    const navBarHeight = isIphoneX() ? 88 : 64
     return (
-      <Button onPress={this.onEditProfileButtonPress.bind(this)}>
-        Save Changes
-      </Button> 
-    )
-  }
-
-  render () {
-    return (
-      <Card>
+      <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior="padding"
+      keyboardVerticalOffset={navBarHeight}>
         <ProfileForm {...this.props} />
         <CardSection>
-          {this.renderEditProfileButton()}
+          <Button onPress={this.onButtonPress.bind(this)}>
+            Create Profile
+          </Button>
         </CardSection>
-      </Card>
-    )
+      </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   const { name, age, bio, imageUri } = state.profForm;
-
   return { name, age, bio, imageUri };
 };
 
 export default connect(mapStateToProps, {
-  saveProfile, updateProfile, fetchProfile
+  updateProfile, saveProfile, fetchProfile
 })(ProfileEdit);

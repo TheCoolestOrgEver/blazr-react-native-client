@@ -2,17 +2,50 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProfile, getUser, saveProfile } from '../actions';
-import { Text, FlatList, Image, SafeAreaView } from 'react-native';
+import { Text, FlatList, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import SwipeScreenItem from './SwipeScreenItem';
 import ProfileEditItem from './ProfileEditItem';
 import DeckSwipe from './DeckSwipe';
 import { CardSection, Button } from './common';
-import { Container, View, Header, DeckSwiper, Card, CardItem, Thumbnail, Left, Body, Icon } from 'native-base';
+import { Container, View, Header, DeckSwiper, Card, CardItem, Thumbnail, Left, Body } from 'native-base';
 import { getProfile, updateLocation } from './Helper.js'
+import { Icon } from 'react-native-elements'
+import { Actions } from 'react-native-router-flux'
+
 class SwipeScreen extends Component {
 
   toRadians (angle) {
     return angle * (Math.PI / 180);
+  }
+
+  componentWillMount() {
+    Actions.refresh({ left: this._renderLeftButton, right: this._renderRightButton });
+  }
+
+  _renderRightButton = () => {
+    return(
+        <TouchableOpacity style={{paddingRight: 15, paddingBottom: 10}} onPress={() => this._handleChatIconTouch() } >
+            <Icon name='sc-telegram'type='evilicon' size={40} color='#a8a8a8' />
+        </TouchableOpacity>
+    );
+  };
+
+  _handleChatIconTouch = () => {
+      console.log('Touched!');
+      //Actions.profileEdit()
+  }
+
+  _renderLeftButton = () => {
+    return(
+        <TouchableOpacity style={{paddingLeft: 20, paddingBottom: 10}} onPress={() => this._handleEditIconTouch() } >
+            <Icon name='md-settings'type='ionicon' size={30} color='#a8a8a8' />
+        </TouchableOpacity>
+    );
+  };
+
+  _handleEditIconTouch = () => {
+      console.log('Touched!');
+      Actions.profileEdit()
   }
 
   componentDidMount() {
@@ -105,9 +138,9 @@ class SwipeScreen extends Component {
           keyExtractor={profile => profile.uid}
         />
       */}
-      
+      <View style={{flex: 1}}>
       <DeckSwipe data={this.props.snapshot}/>
-
+      </View>
       </SafeAreaView>
     );
   }

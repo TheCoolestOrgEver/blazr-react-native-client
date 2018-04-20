@@ -98,7 +98,7 @@ export const fetchProfile = ( latitude, longitude ) => {
   }
 };
 
-export const saveProfile = ({ name, age, bio, imageUri, lat, long, uid }) => {
+export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
 

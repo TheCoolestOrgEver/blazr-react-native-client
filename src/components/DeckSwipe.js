@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Button } from './common';
-import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body, Icon } from 'native-base';
+import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body } from 'native-base';
+import { Icon } from 'react-native-elements'
+const window = Dimensions.get('window');
 
 const cards1 = [
   {
@@ -45,26 +47,27 @@ class DeckSwipe extends Component {
             onSwipeRight={() => {console.log("You swiped right")}}
             renderItem={item =>
               <Card style={{ elevation: 3 }}>
-                <CardItem>
-                  <Left>
-                  <Thumbnail source={{uri: item.imageURL}} />
-                      {/*<Thumbnail source={item.image} />*/}
-                    <Body>
-                      {/*<Text>{item.text}</Text>*/}
-                      <Text>{item.name}</Text>
-                      <Text note>NativeBase</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-                <CardItem cardBody>
-                <Image style={{ height: 300, flex: 1 }} source={{uri: item.imageURL}} />
+              <CardItem cardBody>
+                <Image style={{ height: window.height*0.55, flex: 1 }} source={{uri: item.imageURL}} />
                     {/*<Image style={{ height: 300, flex: 1 }} source={item.image} />*/}
                 </CardItem>
-                <CardItem>
-                  <Icon name="heart" style={{ color: '#ED4A6A' }} />
-                  <Text>{item.name}</Text>
-                  {/*<Text>{item.name}</Text>*/}
+                <CardItem style={{height: 80}}>
+                  <Left>
+                  {/* <Thumbnail source={{uri: item.imageURL}} /> */}
+                      {/*<Thumbnail source={item.image} />*/}
+                    {/* <Body> */}
+                      {/*<Text>{item.text}</Text>*/}
+                      <Body>
+                      <Text>
+                        <Text style={styles.nameStyle}>{item.name}, </Text>
+                        <Text style={styles.ageStyle}>{item.age}</Text>
+                      </Text>
+                      <Text note>{item.bio}</Text>
+                      </Body>
+                    {/* </Body> */}
+                  </Left>
                 </CardItem>
+                
               </Card>
             }
             renderEmpty={() =>
@@ -74,20 +77,34 @@ class DeckSwipe extends Component {
             }
           />
         </View>
-        <View style={{ flexDirection: "row", flex: 1, position: "absolute", bottom: 50, left: 0, right: 0, justifyContent: 'space-between', padding: 15 }}>
-          <Button iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
-            <Icon name="arrow-back" />
-            <Text>Swipe Left</Text>
-          </Button>
-          <Button iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
-            <Icon name="arrow-forward" />
-            <Text>Swipe Right</Text>
-          </Button>
+        <View style={{ flexDirection: "row", flex: 1, position: "absolute", top: window.height*0.55 + 90, bottom: 0, left: 0, right: 0, justifyContent: 'center', padding: 15 }}>
+          <TouchableOpacity iconLeft onPress={() => this._deckSwiper._root.swipeLeft()}>
+            <Icon raised name='x'type='feather' size={50} color='#F52668' />
+          </TouchableOpacity>
+          <View style={{width: 10}}>
+          </View>
+          <TouchableOpacity iconRight onPress={() => this._deckSwiper._root.swipeRight()}>
+            <Icon raised name='heart'type='font-awesome' size={50} color='#7cffb6' />
+          </TouchableOpacity>
         </View>
       </Container>
+      
     );
   }
 }
+
+const styles = {
+  nameStyle: {
+    fontSize: 20,
+    fontFamily: 'GothamRounded-Book',
+    fontWeight: 'bold'
+  }, 
+  ageStyle: {
+    fontSize: 20,
+    fontFamily: 'GothamRounded-Book'
+  }
+};
+
 
 // const mapStateToProps = (state) => {
 //   const { name, age, bio } = state.profForm;

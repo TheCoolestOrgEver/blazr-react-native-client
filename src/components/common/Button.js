@@ -17,7 +17,8 @@ const styles = {
     alignSelf: 'center',
     color: '#ffffff',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    fontFamily: 'GothamRounded-Book',
     paddingTop: 15,
     paddingBottom: 15
   },
