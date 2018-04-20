@@ -6,8 +6,14 @@ import ProfileForm from './ProfileForm';
 import { View, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 import firebase from 'firebase';
+import { getProfile } from './Helper.js'
 
 class ProfileEdit extends Component {
+
+  componentWillMount() {
+
+  }
+
   onButtonPress() {
     const { currentUser } = firebase.auth();
     const usrid = currentUser.uid;
@@ -27,7 +33,7 @@ class ProfileEdit extends Component {
         <ProfileForm {...this.props} />
         <CardSection>
           <Button onPress={this.onButtonPress.bind(this)}>
-            Create Profile
+            Save Changes
           </Button>
         </CardSection>
       </KeyboardAvoidingView>
