@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   age: '',
   bio: '', 
   imageUri: '',
-  displayImage: 'https://facebook.github.io/react-native/docs/assets/favicon.png'
+  displayImage: 'https://i.imgur.com/U46AcUU.jpg'
 };
 
 export default (state = INITIAL_STATE, action) => {

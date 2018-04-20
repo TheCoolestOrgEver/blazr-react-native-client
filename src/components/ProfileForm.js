@@ -13,7 +13,7 @@ class ProfileForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { imagePath: 'https://facebook.github.io/react-native/docs/assets/favicon.png' };
+    this.state = { imagePath: 'https://i.imgur.com/U46AcUU.jpg' };
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
 
