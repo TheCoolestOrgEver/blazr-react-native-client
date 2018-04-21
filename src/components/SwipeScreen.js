@@ -139,7 +139,7 @@ class SwipeScreen extends Component {
         />
       */}
       <View style={{flex: 1}}>
-      <DeckSwipe data={this.props.snapshot}/>
+        <DeckSwipe uid={usrid} data={this.props.snapshot}/>
       </View>
       </SafeAreaView>
     );

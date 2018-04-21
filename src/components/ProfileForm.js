@@ -88,7 +88,7 @@ class ProfileForm extends Component {
           <CardSection>
             <Input
               label='Name'
-              placeholder='First Last'
+              placeholder='first name'
               value={this.props.name}
               onChangeText={value => this.props.updateProfile({ prop: 'name', value})}
             />

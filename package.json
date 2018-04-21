@@ -17,6 +17,7 @@
     "react-native-image-picker": "^0.26.7",
     "react-native-iphone-x-helper": "^1.0.2",
     "react-native-keyboard-listener": "^1.1.0",
+    "react-native-rabbitmq": "^0.5.13",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-vector-icons": "^4.6.0",
     "react-redux": "^5.0.7",
@@ -31,10 +32,10 @@
   },
   "jest": {
     "preset": "react-native"
-  }, 
+  },
   "rnpm": {
     "assets": [
-	"./assets/fonts/"
+      "./assets/fonts/"
     ]
   }
 }

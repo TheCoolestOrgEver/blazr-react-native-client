@@ -5,6 +5,9 @@ import { Button } from './common';
 import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body } from 'native-base';
 import { Icon } from 'react-native-elements'
 const window = Dimensions.get('window');
+var Config = require('../../config.json')
+import { Connection, Queue, Exchange } from 'react-native-rabbitmq';
+import { getUser } from '../actions';
 
 const cards1 = [
   {
@@ -21,8 +24,65 @@ const cards1 = [
   }
 ];
 
+//const exchange;
+
+let otherUser = 'user';
+
 class DeckSwipe extends Component {
+
+  componentDidMount() {
+
+    const config = {
+      host: 'localhost',
+      port: 5672,
+      username: 'cduica',
+      password: 'password',
+      virtualhost: '/'
+    };
+
+    let connection = new Connection(config);
+    connection.connect();
+
+    let connected = false;
+    let queue;
+    let routing_key = '';
+    let exchange_name = 'cduica-world';
+
+    connection.on('connected', (event) => {
+      queue = new Queue(connection, {
+        name: '',
+        passive: false,
+        durable: true,
+        exclusive: false,
+        consumer_arguments: {'x-priority': 1}
+      });
+      exchange = new Exchange(connection, {
+        name: exchange_name,
+        type: 'fanout',
+        durable: true,
+        autoDelete: false,
+        exclusive: false,
+        internal: false,
+        confirm: true
+      });
+      queue.bind(exchange, '');
+      //exchange.publish('bafftjk8t9naefk39ar2 bafftjk8t9naefk39ar1', '', properties);
+      //this.publishMessage(properties);
+    });
+
+    connection.on('error', event => {
+      connected = false;
+      console.log(connection);
+      console.log(event);
+    });
+
+  }
   
+  publishMessage(properties, userA, userB) {
+    console.log('publishing message');
+    exchange.publish(userA + ' ' + userB, '', properties);
+  }
+
   render() {
     const cards = this.props.data;
     console.log('here is cards');
@@ -43,13 +103,16 @@ class DeckSwipe extends Component {
             ref={(c) => this._deckSwiper = c}
             dataSource={cards}
             looping={false}
-            onSwipeLeft={() => {console.log("You swiped left")}}
-            onSwipeRight={() => {console.log("You swiped right")}}
+            onSwipeLeft={() => { console.log('swipe left') }}
+            onSwipeRight={() =>{ this.publishMessage(properties, this.props.uid, otherUser) }}
             renderItem={item =>
               <Card style={{ elevation: 3 }}>
               <CardItem cardBody>
                 <Image style={{ height: window.height*0.55, flex: 1 }} source={{uri: item.imageURL}} />
                     {/*<Image style={{ height: 300, flex: 1 }} source={item.image} />*/}
+                    <Text style={{height:0, width: 0, opacity: 0}}>
+                    {otherUser= item.userID}
+                    </Text>
                 </CardItem>
                 <CardItem style={{height: 80}}>
                   <Left>
@@ -93,6 +156,11 @@ class DeckSwipe extends Component {
   }
 }
 
+
+const properties = {
+  expiration: 10000
+}
+
 const styles = {
   nameStyle: {
     fontSize: 20,
@@ -104,7 +172,6 @@ const styles = {
     fontFamily: 'GothamRounded-Book'
   }
 };
-
 
 // const mapStateToProps = (state) => {
 //   const { name, age, bio } = state.profForm;

@@ -8,6 +8,7 @@ import LoginForm from './components/LoginForm';
 import Router from './Router';
 
 class App extends Component {
+
   componentWillMount() {
     firebase.initializeApp({
       apiKey: "AIzaSyDBugnZ_UZIrLV3QNr1wWKDIm1Bx7BpbqI",
