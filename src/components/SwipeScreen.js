@@ -12,6 +12,7 @@ import { getProfile, updateLocation } from './Helper.js'
 import { Icon } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
 
+let currentUser = {};
 class SwipeScreen extends Component {
 
   toRadians (angle) {
@@ -120,6 +121,17 @@ class SwipeScreen extends Component {
     // console.log(data);
     //console.log(this.props.profiles);
     //console.log(getUser().payload);
+    index = -1;
+    for( i = 0; i < this.props.snapshot.length; ++i) {
+      if(this.props.snapshot[i].userID === usrid) {
+        index = i;
+      }
+    }
+
+    if(index > -1) {
+      currentUser = this.props.snapshot[index];
+      this.props.snapshot.splice(index, 1);
+    }
     return (
       // 1st flist edits user
       // 2nd displays all other profiles
@@ -138,8 +150,9 @@ class SwipeScreen extends Component {
           keyExtractor={profile => profile.uid}
         />
       */}
+
       <View style={{flex: 1}}>
-        <DeckSwipe uid={usrid} data={this.props.snapshot}/>
+        <DeckSwipe uid={usrid} data={this.props.snapshot} currentUser={currentUser}/>
       </View>
       </SafeAreaView>
     );

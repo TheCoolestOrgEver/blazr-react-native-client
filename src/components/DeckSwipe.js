@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { Button } from './common';
 import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body } from 'native-base';
 import { Icon } from 'react-native-elements'
@@ -8,6 +8,7 @@ const window = Dimensions.get('window');
 var Config = require('../../config.json')
 import { Connection, Queue, Exchange } from 'react-native-rabbitmq';
 import { getUser } from '../actions';
+import Modal from 'react-native-modalbox';
 
 const cards1 = [
   {
@@ -25,12 +26,23 @@ const cards1 = [
 ];
 
 //const exchange;
-
 let otherUser = 'user';
-
 class DeckSwipe extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false,
+      isDisabled: false,
+      swipeToClose: true,
+      sliderValue: 0.3, 
+      matchName: 'N',
+      matchImageURL: ''
+    };
+  }
+
   componentDidMount() {
+    //this.refs.matchModal.open()
 
     const config = {
       host: 'localhost',
@@ -53,12 +65,22 @@ class DeckSwipe extends Component {
         name: '',
         passive: false,
         durable: true,
+        autoDelete: true,
         exclusive: false,
         consumer_arguments: {'x-priority': 1}
       });
       exchange = new Exchange(connection, {
         name: exchange_name,
-        type: 'fanout',
+        type: 'direct',
+        durable: true,
+        autoDelete: false,
+        exclusive: false,
+        internal: false,
+        confirm: true
+      });
+      exchange2 = new Exchange(connection, {
+        name: 'cduica-hello',
+        type: 'direct',
         durable: true,
         autoDelete: false,
         exclusive: false,
@@ -66,16 +88,36 @@ class DeckSwipe extends Component {
         confirm: true
       });
       queue.bind(exchange, '');
-      //exchange.publish('bafftjk8t9naefk39ar2 bafftjk8t9naefk39ar1', '', properties);
-      //this.publishMessage(properties);
-    });
+      queue.bind(exchange2, '');
+      queue.on('message', (data) => {
+        message = data.message;
+        user = message.split(" ");
+        if(data.exchange === 'cduica-hello' && user[0] == this.props.uid){
+          //console.log(data);
 
+          //profile = users.get(user[1])
+          for(i = 0; i < this.props.data.length; ++i) {
+            if(this.props.data[i].userID === user[1]) {
+              this.setState({matchName: this.props.data[i].name, matchImageURL: this.props.data[i].imageURL});
+            }
+          }
+
+          this.refs.matchModal.open()
+        }
+      });
+	
+    });
     connection.on('error', event => {
       connected = false;
       console.log(connection);
       console.log(event);
     });
 
+  }
+
+  componentWillUnmount() {
+    console.log('closing connection');
+    connection.close();
   }
   
   publishMessage(properties, userA, userB) {
@@ -84,7 +126,9 @@ class DeckSwipe extends Component {
   }
 
   render() {
-    const cards = this.props.data;
+    
+    let cards = this.props.data;
+
     console.log('here is cards');
     console.log(cards[0]);
     console.log(cards.length);
@@ -97,7 +141,6 @@ class DeckSwipe extends Component {
     console.log(typeof cards1);
     return (
       <Container>
-        
         <View>
           <DeckSwiper
             ref={(c) => this._deckSwiper = c}
@@ -140,14 +183,33 @@ class DeckSwipe extends Component {
             }
           />
         </View>
+        <Modal style={[styles.modal, styles.matchModal]} ref={"matchModal"} isDisabled={this.state.isDisabled} backdrop={true}>
+           <Text style={{fontSize: 70, fontFamily: 'Mission-Script', color: 'white'}}>
+            It's a Match!
+          </Text>
+          <Text>
+            <Text style={{color: 'white'}}>
+              You matched with 
+            </Text>
+            <Text style={{color: 'white'}}>
+              {' ' + this.state.matchName + '!'}
+            </Text>
+          </Text>
+          <View style={{height: 10}}></View>
+          <View style={{ flexDirection: 'row' }}>
+          <Image style={{ height: 70, width: 70, borderRadius: 35, borderWidth: 1, borderColor: 'white' }} source={{uri: this.props.currentUser.imageURL}} />
+          <View style={{ width: 30 }}></View>
+          <Image style={{ height: 70, width: 70, borderRadius: 35, borderWidth: 1, borderColor: 'white' }} source={{uri: this.state.matchImageURL}} />
+          </View>
+        </Modal>
         <View style={{ flexDirection: "row", flex: 1, position: "absolute", top: window.height*0.55 + 90, bottom: 0, left: 0, right: 0, justifyContent: 'center', padding: 15 }}>
-          <TouchableOpacity iconLeft >
-            <Icon raised onPress={() => this._deckSwiper._root.swipeLeft()} name='x'type='feather' size={50} color='#F52668' />
+          <TouchableOpacity>
+            <Icon raised iconLeft onPress={() => this._deckSwiper._root.swipeLeft()} name='x'type='feather' size={window.width/7} color='#F52668' />
           </TouchableOpacity>
           <View style={{width: 10}}>
           </View>
           <TouchableOpacity >
-            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight()}} name='heart'type='font-awesome' size={50} color='#7cffb6' />
+            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight()}} name='heart'type='font-awesome' size={window.width/7} color='#7cffb6' />
           </TouchableOpacity>
         </View>
       </Container>
@@ -162,6 +224,20 @@ const properties = {
 }
 
 const styles = {
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20, 
+    borderWidth: 1,
+    borderColor: 'white'
+  },
+  matchModal: {
+    height: 300, 
+    width: window.width - 20,
+    top: window.height*0.20,
+    opacity: 0.9,
+    backgroundColor: 'black'
+  },
   nameStyle: {
     fontSize: 20,
     fontFamily: 'GothamRounded-Book',
