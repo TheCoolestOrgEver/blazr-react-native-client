@@ -12,12 +12,16 @@ import { Actions } from 'react-native-router-flux'
 import MatchListItem from './MatchListItem';
 import MatchesHeader from './MatchesHeader'
 
-let currentUser = {};
 class MatchList extends Component {
 
   componentWillMount() {
     Actions.refresh({ left: this._renderLeftButton });
     //this.props.fetchMatches();
+    getProfile().then((profile) => {
+      this.setState({
+        currentUser: profile
+      })
+    });
   }
 
   _renderLeftButton = () => {
@@ -42,7 +46,8 @@ class MatchList extends Component {
     // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state ={
-        dataSource: ds.cloneWithRows([])
+        dataSource: ds.cloneWithRows([]), 
+        currentUser: {}
     };
     this.props.fetchMatches().then(() => {
       this.setState({
@@ -79,7 +84,7 @@ class MatchList extends Component {
       <ListView
           style={styles.listContainer}
           dataSource={this.state.dataSource}
-          renderRow={(data) => <MatchListItem {...data} />}
+          renderRow={(data) => <MatchListItem profile={data} currentUser={this.state.currentUser} />}
           renderHeader={() => <MatchesHeader />}
       />
     );

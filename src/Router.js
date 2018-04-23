@@ -6,6 +6,7 @@ import ProfileCreate from './components/ProfileCreate';
 import SwipeScreen from './components/SwipeScreen';
 import ProfileEdit from './components/ProfileEdit';
 import MatchList from './components/MatchList';
+import Thread from './components/Thread';
 
 const RouterComponent = () => {
   return (
@@ -56,8 +57,13 @@ const RouterComponent = () => {
             key="matches"
             component={MatchList}
             title="matches"
-            modal={false}
             renderBackButton={() => (null)}
+          />
+
+          <Scene
+            key="thread"
+            component={Thread}
+            title=""
           />
         </Scene>
 

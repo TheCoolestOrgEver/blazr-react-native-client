@@ -45,7 +45,7 @@ class DeckSwipe extends Component {
     //this.refs.matchModal.open()
 
     const config = {
-      host: 'localhost',
+      host: Config.HOST,
       port: 5672,
       username: 'cduica',
       password: 'password',
@@ -204,12 +204,12 @@ class DeckSwipe extends Component {
         </Modal>
         <View style={{ flexDirection: "row", flex: 1, position: "absolute", top: window.height*0.55 + 90, bottom: 0, left: 0, right: 0, justifyContent: 'center', padding: 15 }}>
           <TouchableOpacity>
-            <Icon raised iconLeft onPress={() => this._deckSwiper._root.swipeLeft()} name='x'type='feather' size={window.width/7} color='#F52668' />
+            <Icon raised iconLeft onPress={() => this._deckSwiper._root.swipeLeft()} name='x'type='feather' size={window.width/8} color='#F52668' />
           </TouchableOpacity>
           <View style={{width: 10}}>
           </View>
           <TouchableOpacity >
-            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight(); this.publishMessage(properties, this.props.uid, otherUser); }} name='heart'type='font-awesome' size={window.width/7} color='#7cffb6' />
+            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight(); this.publishMessage(properties, this.props.uid, otherUser); }} name='heart'type='font-awesome' size={window.width/8} color='#7cffb6' />
           </TouchableOpacity>
         </View>
       </Container>
