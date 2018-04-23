@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { updateProfile, createProfile, fetchProfile } from '../actions';
 import { Card, CardSection, ButtonSection, Button, Spinner } from './common';
 import ProfileForm from './ProfileForm';
-import { View, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { View, KeyboardAvoidingView, SafeAreaView, Alert } from 'react-native';
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class ProfileCreate extends Component {
@@ -18,8 +18,21 @@ class ProfileCreate extends Component {
   onButtonPress() {
     const { name, age, bio, imageUri } = this.props;
     console.log('profile form create', imageUri);
-    this.setState({loading: true});
-    this.props.createProfile({ name, age, bio, imageUri})
+    if (name == '' || age == '' || bio == '') {
+      Alert.alert(
+        'Invalid form',
+        'Please enter all the fields',
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+      this.setState({loading: false});
+    } else {
+      this.setState({loading: true});
+      this.props.createProfile({ name, age, bio, imageUri})
+    }
     //this.setState({loading: false});
   }
 

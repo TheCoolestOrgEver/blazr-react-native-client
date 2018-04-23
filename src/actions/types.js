@@ -21,4 +21,6 @@ export const PROFILE_SAVE = 'profile_save';
 export const PROFILE_FETCH_SUCCESS = 'profile_fetch_success';
 export const MATCHES_FETCH_SUCCESS = 'matches_fetch_success';
 
+export const PROFILE_FETCHED = 'profile_fetched';
+
 export const GET_USER = 'get_user';

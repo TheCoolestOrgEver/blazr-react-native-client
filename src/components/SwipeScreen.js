@@ -34,7 +34,7 @@ class SwipeScreen extends Component {
   _handleChatIconTouch = () => {
       console.log('Touched!');
       //Actions.profileEdit()
-      Actions.matches();
+      Actions.matches()
   }
 
   _renderLeftButton = () => {
@@ -47,7 +47,11 @@ class SwipeScreen extends Component {
 
   _handleEditIconTouch = () => {
       console.log('Touched!');
-      Actions.profileEdit()
+      getProfile()
+      .then( (response) => {
+        console.log(response);
+        Actions.profileEdit({currentUser: response});
+      } )
   }
 
   componentDidMount() {

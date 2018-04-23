@@ -15,6 +15,7 @@ class ProfileForm extends Component {
     super(props);
     this.state = { imagePath: 'https://i.imgur.com/U46AcUU.jpg' };
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
+    console.log(this.props.imageURL);
   }
 
   componentWillMount () {
@@ -80,7 +81,7 @@ class ProfileForm extends Component {
           <TouchableOpacity onPress={() => this.onSelectImageButtonPress()}>
           <Animated.Image
           style={ { alignSelf: 'center', height: this.imageHeight, width: this.imageHeight, borderRadius: 15 } }
-          source={{ uri: this.props.displayImage }}
+          source={{ uri: this.props.imageURL }}
           />
           </TouchableOpacity>
           <View style={{height: 10, opacity: 0}}>
@@ -99,7 +100,7 @@ class ProfileForm extends Component {
             <Input
               label='Age'
               placeholder='102'
-              value={this.props.age}
+              value={this.props.age + ''}
               onChangeText={value => this.props.updateProfile({ prop: 'age', value})}
             />
           </CardSection>
@@ -145,9 +146,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { name, age, bio, imageUri, displayImage } = state.profForm;
+  const { name, age, bio, imageUri, imageURL } = state.profForm;
 
-  return { name, age, bio, imageUri, displayImage };
+  return { name, age, bio, imageUri, imageURL };
 };
 
 export default connect(mapStateToProps, {

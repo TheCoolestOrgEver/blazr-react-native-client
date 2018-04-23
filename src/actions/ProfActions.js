@@ -8,7 +8,8 @@ import {
   MATCHES_FETCH_SUCCESS,
   IMAGE_CHANGED,
   DISPLAY_IMAGE_CHANGED,
-  GET_USER
+  GET_USER,
+  PROFILE_FETCHED
 } from './types';
 import RNFetchBlob from 'react-native-fetch-blob'
 var Config = require('../../config.json')
@@ -41,6 +42,9 @@ export const createProfile = ({ name, age, bio, imageUri }) => {
   return(dispatch) => {
     uploadProfilePicture({ imageUri }).then((imgurURL) => { 
       console.log(imgurURL)
+      if(imgurURL == null) {
+        imgurURL = 'https://i.imgur.com/U46AcUU.jpg'
+      }
       return fetch('http://' + Config.HOST + ':8080/profile/', {
       method: 'POST',
       headers: {
@@ -83,7 +87,7 @@ export const fetchProfile = ( latitude, longitude ) => {
   const { currentUser } = firebase.auth();
   console.log('lat: ' + latitude);
   return (dispatch) => {
-    return fetch('http://' + Config.HOST + ':8080/profiles/?radius=10&lat=' + latitude + '&long=' + longitude, {
+    return fetch('http://' + Config.HOST + ':8080/profiles/?radius=10&lat=' + latitude + '&long=' + longitude + '&userID=' + currentUser.uid, {
       method: 'GET',
       headers: {
         Accept: 'application/json'
@@ -99,13 +103,16 @@ export const fetchProfile = ( latitude, longitude ) => {
   }
 };
 
-export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
+export const saveProfile = ({ name, age, bio, imageUri, imageURL, uid }) => {
   const { currentUser } = firebase.auth();
   const usrid = currentUser.uid;
 
   return(dispatch) => {
     uploadProfilePicture({ imageUri }).then((imgurURL) => { 
-      console.log(imgurURL)
+      console.log('save profile imgurURL', imageURL)
+      if(imgurURL==null) {
+        imgurURL = imageURL;
+      }
       return fetch('http://' + Config.HOST + ':8080/profile/', {
       method: 'PUT',
       headers: {
@@ -119,13 +126,33 @@ export const saveProfile = ({ name, age, bio, imageUri, uid }) => {
     .then((response) => {
       console.log('Update profile response: ', response);
       dispatch({ type: PROFILE_SAVE });
-      Actions.main();
+      Actions.pop();
     })
     .catch((error) => {
       console.log(error);
     })
   }
 };
+
+export const fetchCurrentUser = () => {
+  const { currentUser } = firebase.auth();
+  const usrid = currentUser.uid;
+  
+  return(dispatch) => {
+    return fetch('http://' + Config.HOST + ':8080/profile/' + usrid, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      dispatch({type: PROFILE_FETCHED, payload: response});
+    })
+  }
+}
 
 export const getUser = () => {
   const { currentUser } = firebase.auth();
