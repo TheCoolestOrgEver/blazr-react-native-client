@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProfile, getUser, saveProfile } from '../actions';
 import { Text, FlatList, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import SwipeScreenItem from './SwipeScreenItem';
-import ProfileEditItem from './ProfileEditItem';
+import MatchListItem from './MatchListItem';
 import DeckSwipe from './DeckSwipe';
 import { CardSection, Button } from './common';
 import { Container, View, Header, DeckSwiper, Card, CardItem, Thumbnail, Left, Body } from 'native-base';
@@ -34,6 +34,7 @@ class SwipeScreen extends Component {
   _handleChatIconTouch = () => {
       console.log('Touched!');
       //Actions.profileEdit()
+      Actions.matches();
   }
 
   _renderLeftButton = () => {
@@ -95,7 +96,7 @@ class SwipeScreen extends Component {
 
   renderUserRow(profile) {
     if (profile.item.usrid === getUser().payload) {
-      return <ProfileEditItem profile={profile} />;
+      return <MatchListItem profile={profile} />;
     }
   }
 

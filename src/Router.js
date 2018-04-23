@@ -5,6 +5,7 @@ import SignUpForm from './components/SignUpForm';
 import ProfileCreate from './components/ProfileCreate';
 import SwipeScreen from './components/SwipeScreen';
 import ProfileEdit from './components/ProfileEdit';
+import MatchList from './components/MatchList';
 
 const RouterComponent = () => {
   return (
@@ -33,7 +34,7 @@ const RouterComponent = () => {
           />
         </Scene>
 
-        <Scene key="main" modal>
+        <Scene key="main">
           <Scene
           navigationBarStyle={{ backgroundColor: '#ffffff' }}
           titleStyle={{ color: '#F52668', fontSize: 40, fontFamily: 'GothamRounded-Bold' }}
@@ -48,7 +49,18 @@ const RouterComponent = () => {
             component={ProfileEdit}
             title="Edit Profile"
           />
+
+          <Scene
+          navigationBarStyle={{ backgroundColor: '#ffffff' }}
+          titleStyle={{ color: '#F52668', fontSize: 20, fontFamily: 'GothamRounded-Bold' }}
+            key="matches"
+            component={MatchList}
+            title="matches"
+            modal={false}
+            renderBackButton={() => (null)}
+          />
         </Scene>
+
       </Scene>
     </Router>
   );

@@ -19,5 +19,6 @@ export const PROFILE_CREATE = 'profile_create';
 export const PROFILE_UPDATE = 'profile_update';
 export const PROFILE_SAVE = 'profile_save';
 export const PROFILE_FETCH_SUCCESS = 'profile_fetch_success';
+export const MATCHES_FETCH_SUCCESS = 'matches_fetch_success';
 
 export const GET_USER = 'get_user';

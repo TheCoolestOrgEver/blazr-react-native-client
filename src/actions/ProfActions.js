@@ -5,6 +5,7 @@ import {
   PROFILE_UPDATE,
   PROFILE_SAVE,
   PROFILE_FETCH_SUCCESS,
+  MATCHES_FETCH_SUCCESS,
   IMAGE_CHANGED,
   DISPLAY_IMAGE_CHANGED,
   GET_USER
@@ -138,3 +139,27 @@ export const getUser = () => {
   //    dispatch({ type: GET_USER, payload: usrid });
   //  };
 };
+
+export const fetchMatches = () => {
+  const { currentUser } = firebase.auth();
+  const usrid = currentUser.uid;
+
+  return(dispatch) => {
+    return fetch('http://' + Config.HOST + ':8080/matches/' + usrid, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      console.log('match fetch response: ', response)
+      dispatch({ type: MATCHES_FETCH_SUCCESS, payload: response});
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+}

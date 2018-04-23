@@ -188,10 +188,10 @@ class DeckSwipe extends Component {
             It's a Match!
           </Text>
           <Text>
-            <Text style={{color: 'white'}}>
+            <Text style={{color: 'white', fontFamily: 'GothamRounded-Book'}}>
               You matched with 
             </Text>
-            <Text style={{color: 'white'}}>
+            <Text style={{color: 'white', fontFamily: 'GothamRounded-Book'}}>
               {' ' + this.state.matchName + '!'}
             </Text>
           </Text>
@@ -209,7 +209,7 @@ class DeckSwipe extends Component {
           <View style={{width: 10}}>
           </View>
           <TouchableOpacity >
-            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight()}} name='heart'type='font-awesome' size={window.width/7} color='#7cffb6' />
+            <Icon raised iconRight onPress={() => {this._deckSwiper._root.swipeRight(); this.publishMessage(properties, this.props.uid, otherUser); }} name='heart'type='font-awesome' size={window.width/7} color='#7cffb6' />
           </TouchableOpacity>
         </View>
       </Container>
