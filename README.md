@@ -6,8 +6,7 @@ Ever travel to a new place and just wish a local could show you around? Or maybe
 
 <p align="center">
 <img height="300" src="https://user-images.githubusercontent.com/8741833/39400336-86d97f1c-4afc-11e8-8ce1-ecfdcb640a9c.PNG">
-</p>
-<p align="center">
+
 <img height="300" src="https://user-images.githubusercontent.com/8741833/39400350-a884860c-4afc-11e8-88ee-eda4baac580e.PNG">
 </p>
 <p align="center">
