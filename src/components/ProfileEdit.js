@@ -1,49 +1,82 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
-import { updateProfile, saveProfile, fetchProfile } from '../actions';
-import { Button, Card, CardSection, Input } from './common';
+import { updateProfile, saveProfile, fetchProfile, fetchCurrentUser } from '../actions';
+import { Card, CardSection, ButtonSection, Button, Spinner } from './common';
 import ProfileForm from './ProfileForm';
+import { View, KeyboardAvoidingView, SafeAreaView, Alert } from 'react-native';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
+import firebase from 'firebase';
 
 class ProfileEdit extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false, 
+    }
+    
+  }
+
   componentWillMount() {
-    _.each(this.props.profile, (value, prop) => {
-      this.props.updateProfile({ prop, value })
-    });
+    this.props.fetchCurrentUser()
   }
 
-  onEditProfileButtonPress() {
-    const { name, age, bio } = this.props;
-    this.props.saveProfile({ name, age, bio, uid: this.props.profile.uid });
-  }
+  renderSaveButton() {
+    if (this.state.loading) {
+      return <Spinner size='large' />;
+    }
 
-  renderEditProfileButton() {
     return (
-      <Button onPress={this.onEditProfileButtonPress.bind(this)}>
+      <Button onPress={this.onButtonPress.bind(this)}>
         Save Changes
-      </Button> 
+      </Button>
     )
   }
 
-  render () {
+  onButtonPress() {
+    const { currentUser } = firebase.auth();
+    const usrid = currentUser.uid;
+    const { name, age, bio, imageUri, imageURL } = this.props;
+    console.log('profile form save', imageUri);
+    this.setState({loading: true});
+    if (name == '' || age == '' || bio == '') {
+      Alert.alert(
+        'Invalid form',
+        'Please enter all the fields',
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    } else {
+      this.props.saveProfile({ name, age, bio, imageUri, imageURL, usrid});
+    }
+  }
+  
+  render() {
+    const navBarHeight = isIphoneX() ? 88 : 64
     return (
-      <Card>
+      <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior="padding"
+      keyboardVerticalOffset={navBarHeight}>
         <ProfileForm {...this.props} />
-        <CardSection>
-          {this.renderEditProfileButton()}
-        </CardSection>
-      </Card>
-    )
+        <ButtonSection>
+          {this.renderSaveButton()}
+        </ButtonSection>
+      </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { name, age, bio } = state.profForm;
-
-  return { name, age, bio };
+  const { name, age, bio, imageUri, imageURL } = state.profForm;
+  return { name, age, bio, imageUri, imageURL };
 };
 
 export default connect(mapStateToProps, {
-  saveProfile, updateProfile, fetchProfile
+  updateProfile, saveProfile, fetchProfile, fetchCurrentUser
 })(ProfileEdit);

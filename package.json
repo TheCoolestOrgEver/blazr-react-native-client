@@ -10,11 +10,17 @@
     "firebase": "^4.9.0",
     "lodash": "^4.17.5",
     "native-base": "^2.4.1",
+    "prop-types": "^15.6.1",
     "react": "16.0.0",
     "react-native": "0.51.0",
     "react-native-elements": "^0.19.1",
     "react-native-fetch-blob": "^0.10.8",
+    "react-native-gifted-chat": "^0.4.3",
     "react-native-image-picker": "^0.26.7",
+    "react-native-iphone-x-helper": "^1.0.2",
+    "react-native-keyboard-listener": "^1.1.0",
+    "react-native-modalbox": "^1.4.2",
+    "react-native-rabbitmq": "^0.5.13",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-vector-icons": "^4.6.0",
     "react-redux": "^5.0.7",
@@ -29,5 +35,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

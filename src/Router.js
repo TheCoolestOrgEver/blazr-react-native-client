@@ -5,7 +5,8 @@ import SignUpForm from './components/SignUpForm';
 import ProfileCreate from './components/ProfileCreate';
 import SwipeScreen from './components/SwipeScreen';
 import ProfileEdit from './components/ProfileEdit';
-
+import MatchList from './components/MatchList';
+import Thread from './components/Thread';
 
 const RouterComponent = () => {
   return (
@@ -25,7 +26,7 @@ const RouterComponent = () => {
           />
         </Scene>
         
-        <Scene key="profile">
+        <Scene key="profile" panHandlers={null}>
           <Scene
             key="profile"
             component={ProfileCreate}
@@ -36,11 +37,12 @@ const RouterComponent = () => {
 
         <Scene key="main">
           <Scene
-            //rightTitle="Edit Profile"
-            //onRight={() => Actions.profileEdit()}
-            key="swipeScreen" hideNavBar
+          navigationBarStyle={{ backgroundColor: '#ffffff' }}
+          titleStyle={{ color: '#F52668', fontSize: 40, fontFamily: 'GothamRounded-Bold' }}
+          panHandlers={null}
+            key="swipeScreen"
             component={SwipeScreen}
-            title="SwipeScreen"
+            title="blazr"
             initial
           />
           <Scene
@@ -48,7 +50,23 @@ const RouterComponent = () => {
             component={ProfileEdit}
             title="Edit Profile"
           />
+
+          <Scene
+          navigationBarStyle={{ backgroundColor: '#ffffff' }}
+          titleStyle={{ color: '#F52668', fontSize: 20, fontFamily: 'GothamRounded-Bold' }}
+            key="matches"
+            component={MatchList}
+            title="matches"
+            renderBackButton={() => (null)}
+          />
+
+          <Scene
+            key="thread"
+            component={Thread}
+            title=""
+          />
         </Scene>
+
       </Scene>
     </Router>
   );

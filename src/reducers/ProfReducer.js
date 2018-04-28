@@ -1,5 +1,6 @@
 import {
   PROFILE_FETCH_SUCCESS,
+  MATCHES_FETCH_SUCCESS,
   GET_USER
 } from '../actions/types';
 

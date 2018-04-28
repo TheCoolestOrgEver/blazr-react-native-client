@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView } from 'react-native';
 import { emailChanged, passwordChanged, loginUser, signUpRedirect } from '../actions';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Button, Card, CardSection, ButtonSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -44,8 +45,17 @@ class LoginForm extends Component {
   }
 
   render() {
+    const bottomPadding = isIphoneX() ? (
+      <View style={{height: 35, backgroundColor: '#ffffff'}}>
+      </View>
+    ) : (
+      <View></View>
+    );
     return (
-    <View style={styles.viewStyle}>
+    <View style={{flex: 1}}>
+    <KeyboardAvoidingView
+    style={styles.viewStyle}
+    behavior="padding">
     <LinearGradient colors={['#F52668', '#FD8A49']} 
     style={styles.backgroundStyle}
     start={{ x: 0, y: 0 }}
@@ -54,7 +64,6 @@ class LoginForm extends Component {
         Log into {"\n"} 
         your account
       </Text>
-      <Card>
         <CardSection>
           <Input
             label='Email'
@@ -63,7 +72,7 @@ class LoginForm extends Component {
             value={this.props.email}
           />
         </CardSection>
-        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
+        <View style={{height: 2, opacity: 0}}>
         </View>
         <CardSection>
           <Input
@@ -74,16 +83,17 @@ class LoginForm extends Component {
             value={this.props.password}
           />
         </CardSection>
-      </Card>
     </LinearGradient>
-      <CardSection >
+    <ButtonSection >
         {this.renderLoginButton()}
-      </CardSection>
+    </ButtonSection>
       <View style={{height: 1}}>
       </View>
-      <CardSection>
+      <ButtonSection>
         {this.renderSignUpButton()}
-      </CardSection>
+      </ButtonSection>
+    </KeyboardAvoidingView>
+    {bottomPadding}
     </View>
     );
   }
@@ -105,9 +115,10 @@ const styles = {
     flex: 1,
   },
   headerStyle: {
-    margin: 10,
+    margin: 15,
     color: 'white',
     fontSize: 30,
+    fontFamily: 'GothamRounded-Book',
     backgroundColor: 'transparent'
   }
 };

@@ -14,8 +14,13 @@ const styles = {
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    borderColor: '#ddd',
-    position: 'relative'
+    borderColor: '#fff',
+    position: 'relative',
+    borderRadius: 20,
+    borderWidth: 1,
+    elevation: 1,
+    marginLeft: 5,
+    marginRight: 5
   }
 };
 

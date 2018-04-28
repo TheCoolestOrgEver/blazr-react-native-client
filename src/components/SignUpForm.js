@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Button, Card, CardSection, ButtonSection, Input, Spinner } from './common';
 import LinearGradient from 'react-native-linear-gradient';
+import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
 
 class SignUpForm extends Component {
   onEmailChange(text) {
@@ -31,17 +32,16 @@ class SignUpForm extends Component {
     )
   }
 
-  renderSignUpButton() {
-    return (
-      <Button onPress={this.onSignUpButtonPress.bind(this)}>
-        Sign Up
-      </Button>
-    )
-  }
-
   render () {
+    const navBarHeight = isIphoneX() ? 88 : 64
     return (
-    <View style={styles.viewStyle}>
+    <SafeAreaView 
+    style={{flex:1, backgroundColor: '#ffffff'}}
+    >
+    <KeyboardAvoidingView 
+      style={styles.viewStyle}
+      behavior="padding"
+      keyboardVerticalOffset={navBarHeight}>
      <LinearGradient colors={['#2E23F3', '#F52668']} 
       style={styles.backgroundStyle}
       start={{ x: 0, y: 0 }}
@@ -50,42 +50,42 @@ class SignUpForm extends Component {
         Create {"\n"} 
         your account
       </Text>
-      <Card>
-        <CardSection>
-          <Input
-            label='Email'
-            placeholder='email@gmail.com'
-            onChangeText={this.onEmailChange.bind(this)}
-            value={this.props.email}
-          />
-        </CardSection>
-        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-        </View>
-        <CardSection>
-          <Input
-            secureTextEntry
-            label='Password'
-            placeholder='password'
-            onChangeText={this.onPasswordChange.bind(this)}
-            value={this.props.password}
-          />
-        </CardSection>
-        <View style={{height: 1, backgroundColor: '#c7c7cd'}}>
-        </View>
-        <CardSection>
-          <Input
-            secureTextEntry
-            label='Confirm password'
-            placeholder='password'
-            value={this.props.password}
-          />
-        </CardSection>
-      </Card>
-      </LinearGradient>
       <CardSection>
-          {this.renderSignUpButton()}
+        <Input
+          label='Email'
+          placeholder='email@gmail.com'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
+        />
       </CardSection>
-    </View>
+      <View style={{height: 2, opacity: 0}}>
+      </View>
+      <CardSection>
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='password'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+      </CardSection>
+      <View style={{height: 2, opacity: 0}}>
+      </View>
+      <CardSection>
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='confirm password'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+      </CardSection>
+      </LinearGradient>
+      <ButtonSection>
+          {this.renderSignUpButton()}
+      </ButtonSection>
+    </KeyboardAvoidingView>
+    </SafeAreaView>
     )
   }
 }
@@ -107,6 +107,7 @@ const styles = {
     margin: 10,
     color: 'white',
     fontSize: 30,
+    fontFamily: 'GothamRounded-Book',
     backgroundColor: 'transparent'
   }
 };
